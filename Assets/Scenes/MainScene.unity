@@ -3646,6 +3646,12 @@ MonoBehaviour:
     pitch: 1
     audioSource: {fileID: 0}
     loop: 0
+  - name: Success
+    audioClip: {fileID: 8300000, guid: c80c7538938da4ba68562d96411d0623, type: 3}
+    volume: 0.35
+    pitch: 1
+    audioSource: {fileID: 0}
+    loop: 0
 --- !u!4 &1695980419
 Transform:
   m_ObjectHideFlags: 0
@@ -3828,6 +3834,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PipeToSpawn: {fileID: 1167484527730544522, guid: c238d03f01f0b4949976412c90805edf, type: 3}
   coin: {fileID: 3707026042724082499, guid: fd5136f08d1534fd1aa789e06b7b8dcd, type: 3}
+  gem: {fileID: 3707026042724082499, guid: 232908cf9de7543068c36adee5cfb640, type: 3}
 --- !u!4 &1782112801
 Transform:
   m_ObjectHideFlags: 0
@@ -4351,6 +4358,7 @@ MonoBehaviour:
   BirdJumpHeight: 27
   ScoreText: {fileID: 427347516}
   ScoreGOText: {fileID: 40433366}
+  CoinGOText: {fileID: 610455681}
 --- !u!58 &2095317998
 CircleCollider2D:
   m_ObjectHideFlags: 0

@@ -7,6 +7,8 @@ public class Spawner : MonoBehaviour
 {
     [SerializeField] private GameObject PipeToSpawn;
     [SerializeField] private GameObject coin;
+    [SerializeField] private GameObject gem;
+
 
     private float TimeUntilSpawn = 3.5f;
     private float TimeBetweenSpawns;
@@ -24,6 +26,7 @@ public class Spawner : MonoBehaviour
     {
         TimeBetweenSpawns = TimeUntilSpawn;
     }
+
 
     void Update()
     {
@@ -51,13 +54,29 @@ public class Spawner : MonoBehaviour
         }
         else if(TimeUntilSpawn < TimeBetweenSpawns/ 2 && !alreadySpawnedCoin)
         {
-            //Spawn coin
-            float randomY = Random.Range(coinMinSpawnHeight, coinMaxSpawnHeight);
-            float randomX = Random.Range(coinMinSpawnWidth, coinMaxSpawnWidth);
+            //Generate random number
+            int randomNumber = Random.Range(1, 11);
+            if (randomNumber == 10)
+            {
+                //Spawn gem
+                float randomY = Random.Range(coinMinSpawnHeight, coinMaxSpawnHeight);
+                float randomX = Random.Range(coinMinSpawnWidth, coinMaxSpawnWidth);
 
-            Vector2 spawnPosition = new Vector2(randomX, randomY);
-            Instantiate(coin, spawnPosition, Quaternion.identity);
+                Vector2 spawnPosition = new Vector2(randomX, randomY);
+                Instantiate(gem, spawnPosition, Quaternion.identity);
+            }
+            else if (randomNumber > 4)
+            {
+                //Spawn coin
+                float randomY = Random.Range(coinMinSpawnHeight, coinMaxSpawnHeight);
+                float randomX = Random.Range(coinMinSpawnWidth, coinMaxSpawnWidth);
+
+                Vector2 spawnPosition = new Vector2(randomX, randomY);
+                Instantiate(coin, spawnPosition, Quaternion.identity);
+            }
+           
             alreadySpawnedCoin = true;
+
         }
         else
         {
@@ -65,4 +84,5 @@ public class Spawner : MonoBehaviour
             TimeUntilSpawn -= Time.deltaTime;
         }
     }
+
 }

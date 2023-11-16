@@ -10,9 +10,11 @@ public class AudioManager : MonoBehaviour
     void Awake()
     {
         GameObject player = GameObject.Find("Player");        
-            PlayerScript playerScript = player.GetComponent<PlayerScript>();
-            playerScript.OnSpacePressed += PlayerScript_OnSpacePressed;   
-        
+        PlayerScript playerScript = player.GetComponent<PlayerScript>();
+        playerScript.OnSpacePressed += PlayerScript_OnSpacePressed;
+        playerScript.OnSuccess += PlayerScript_OnSuccess;
+
+
         foreach (Sounds s in sounds)
         {
             s.audioSource = gameObject.AddComponent<AudioSource>();
@@ -21,7 +23,7 @@ public class AudioManager : MonoBehaviour
             s.audioSource.pitch = s.pitch;
             s.audioSource.loop = s.loop;
         }
-    }
+    } 
 
     void Start()
     {        
@@ -32,7 +34,12 @@ public class AudioManager : MonoBehaviour
     {
         Play("BirdFlap");
     }
-    
+
+    void PlayerScript_OnSuccess (object sender, EventArgs e)
+    {
+        Debug.Log("OnSuccess activted in AudioManager");
+        Play("Success");
+    }
     public void Play (string name)
     {
         Sounds s = Array.Find(sounds, sound => sound.name == name);

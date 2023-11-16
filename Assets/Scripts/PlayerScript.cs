@@ -11,6 +11,8 @@ public class PlayerScript : MonoBehaviour
 {
     public event EventHandler OnSpacePressed;
     public event EventHandler OnPlayerDeath;
+    public event EventHandler OnSuccess;
+
 
     public Rigidbody2D PlayerRigidbody;
     public GameObject SoundManager;
@@ -27,9 +29,7 @@ public class PlayerScript : MonoBehaviour
 
     [SerializeField] TMP_Text CoinGOText;
 
-    bool isAlive = true;
-    bool alreadyCollidedSuccess = false;
-    bool alreadyCollidedCoin = false;
+    bool alreadyCollided = false;
     float timeUntilAbleToCollideAgain;
 
 
@@ -41,7 +41,6 @@ public class PlayerScript : MonoBehaviour
     }
     void Start()
     {
-        isAlive = true;
         PlayerRigidbody.velocity = Vector2.up * BirdJumpHeight;
 
     }
@@ -52,26 +51,36 @@ public class PlayerScript : MonoBehaviour
         {
             PlayerDies();
         }
-        else if (other.tag == "Success" && alreadyCollidedSuccess == false)
+        else if (other.tag == "Success" && alreadyCollided == false)
         {
-            alreadyCollidedSuccess = true;
+            alreadyCollided = true;
             AddScore(1);
             Debug.Log("Score increased to: " + score);
+            OnSuccess?.Invoke(this, EventArgs.Empty);
+
         }
-        else if (other.tag == "Coins" && alreadyCollidedCoin == false)
+        else if (other.tag == "Coins" && alreadyCollided == false)
         {
-            alreadyCollidedCoin = true;
+            alreadyCollided = true;
             timeUntilAbleToCollideAgain = 1f;
             Destroy(other.gameObject);
             AddCoins(1);
+            OnSuccess?.Invoke(this, EventArgs.Empty);
+        }
+        else if (other.tag == "Gem" && alreadyCollided == false)
+        {
+            alreadyCollided = true;
+            timeUntilAbleToCollideAgain = 1f;
+            Destroy(other.gameObject);
+            AddCoins(5);
+            OnSuccess?.Invoke(this, EventArgs.Empty);
         }
     }
     private void Update()
     {
         if (timeUntilAbleToCollideAgain < 0)
         {
-            alreadyCollidedSuccess = false;
-            alreadyCollidedCoin = false;
+            alreadyCollided = false;
         }
         else
         {
@@ -107,7 +116,6 @@ public class PlayerScript : MonoBehaviour
         Debug.Log("Player dead");
         Invoke(nameof(GameOverPopsUp), 1);
         OnPlayerDeath?.Invoke(this, EventArgs.Empty);
-        isAlive = false;
         enabled = false;
         playerInput.enabled = false;
     }

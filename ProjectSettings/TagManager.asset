@@ -10,6 +10,7 @@ TagManager:
   - Cloud
   - Ground
   - Coins
+  - Gem
   layers:
   - Default
   - TransparentFX
