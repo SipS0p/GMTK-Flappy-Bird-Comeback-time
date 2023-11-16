@@ -19,13 +19,19 @@ public class PlayerScript : MonoBehaviour
     public GameObject desaturationGO;
 
     [SerializeField] float BirdJumpHeight;
-    int Score;
+    int score;
+    int coins;
 
     [SerializeField] TMP_Text ScoreText;
     [SerializeField] TMP_Text ScoreGOText;
 
+    [SerializeField] TMP_Text CoinGOText;
+
     bool isAlive = true;
-    bool AlreadyCollided = false;
+    bool alreadyCollidedSuccess = false;
+    bool alreadyCollidedCoin = false;
+    float timeUntilAbleToCollideAgain;
+
 
     private PlayerInput playerInput;
     // Start is called before the first frame update
@@ -46,17 +52,33 @@ public class PlayerScript : MonoBehaviour
         {
             PlayerDies();
         }
-        else if (other.tag == "Success" && (AlreadyCollided == false))
+        else if (other.tag == "Success" && alreadyCollidedSuccess == false)
         {
-            AlreadyCollided = true;
+            alreadyCollidedSuccess = true;
             AddScore(1);
-            Debug.Log("Score increased to: " + Score);
+            Debug.Log("Score increased to: " + score);
+        }
+        else if (other.tag == "Coins" && alreadyCollidedCoin == false)
+        {
+            alreadyCollidedCoin = true;
+            timeUntilAbleToCollideAgain = 1f;
+            Destroy(other.gameObject);
+            AddCoins(1);
         }
     }
-    private void OnTriggerExit2D(Collider2D collision)
+    private void Update()
     {
-        AlreadyCollided = false;
+        if (timeUntilAbleToCollideAgain < 0)
+        {
+            alreadyCollidedSuccess = false;
+            alreadyCollidedCoin = false;
+        }
+        else
+        {
+            timeUntilAbleToCollideAgain -= Time.deltaTime;
+        }
     }
+
 
     public void Flap (InputAction.CallbackContext context)
     {
@@ -69,10 +91,16 @@ public class PlayerScript : MonoBehaviour
     }
 
     
+    void AddCoins(int coinsToAdd)
+    {
+        coins += coinsToAdd;
+        ScoreText.text = score.ToString();
+    }
+
     void AddScore(int ScoreToAdd)
     {
-        Score = Score + ScoreToAdd;
-        ScoreText.text = Score.ToString();
+        score += ScoreToAdd;
+        ScoreText.text = score.ToString();
     }
     void PlayerDies ()
     {
@@ -88,7 +116,8 @@ public class PlayerScript : MonoBehaviour
     {
         GameOverScreen.SetActive(true);
         ScoreText.enabled = false;
-        ScoreGOText.text = "Score: " + Score.ToString();
+        ScoreGOText.text = "Score: " + score.ToString();
+        CoinGOText.text = "Coins: " + Convert.ToString(coins);
         desaturationGO.SetActive(true);
         foreach (Transform child in desaturationGO.transform)
         {

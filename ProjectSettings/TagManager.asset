@@ -9,6 +9,7 @@ TagManager:
   - Pipe
   - Cloud
   - Ground
+  - Coins
   layers:
   - Default
   - TransparentFX
