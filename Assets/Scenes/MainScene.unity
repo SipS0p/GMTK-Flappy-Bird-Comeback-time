@@ -3827,6 +3827,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PipeToSpawn: {fileID: 1167484527730544522, guid: c238d03f01f0b4949976412c90805edf, type: 3}
+  coin: {fileID: 3707026042724082499, guid: fd5136f08d1534fd1aa789e06b7b8dcd, type: 3}
 --- !u!4 &1782112801
 Transform:
   m_ObjectHideFlags: 0
@@ -4347,7 +4348,7 @@ MonoBehaviour:
   SoundManager: {fileID: 1695980417}
   GameOverScreen: {fileID: 1782120748}
   desaturationGO: {fileID: 2118973402}
-  BirdJumpHeight: 28
+  BirdJumpHeight: 27
   ScoreText: {fileID: 427347516}
   ScoreGOText: {fileID: 40433366}
 --- !u!58 &2095317998
