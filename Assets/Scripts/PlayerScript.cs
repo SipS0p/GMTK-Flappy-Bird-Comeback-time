@@ -22,11 +22,12 @@ public class PlayerScript : MonoBehaviour
 
     [SerializeField] float BirdJumpHeight;
     int score;
+    int highScore;
     int coins;
 
     [SerializeField] TMP_Text ScoreText;
     [SerializeField] TMP_Text ScoreGOText;
-
+    [SerializeField] TMP_Text HighScoreGOText;
     [SerializeField] TMP_Text CoinGOText;
 
     bool alreadyCollided = false;
@@ -42,7 +43,7 @@ public class PlayerScript : MonoBehaviour
     void Start()
     {
         PlayerRigidbody.velocity = Vector2.up * BirdJumpHeight;
-
+        highScore = PlayerPrefs.GetInt("HighScore", 0);
     }
 
     void OnTriggerEnter2D(Collider2D other)
@@ -113,6 +114,16 @@ public class PlayerScript : MonoBehaviour
     }
     void PlayerDies ()
     {
+        if (score > highScore)
+        {
+            
+            PlayerPrefs.SetInt("HighScore", score);
+            Debug.Log("Highscore: " + highScore);
+        }
+        else
+        {
+            Debug.Log("Highscore:" + score);
+        }
         Debug.Log("Player dead");
         Invoke(nameof(GameOverPopsUp), 1);
         OnPlayerDeath?.Invoke(this, EventArgs.Empty);
@@ -124,8 +135,9 @@ public class PlayerScript : MonoBehaviour
     {
         GameOverScreen.SetActive(true);
         ScoreText.enabled = false;
-        ScoreGOText.text = "Score: " + score.ToString();
-        CoinGOText.text = "Coins: " + Convert.ToString(coins);
+        ScoreGOText.text = "Score:   " + score.ToString();
+        CoinGOText.text = "Coins: " + coins.ToString();
+        HighScoreGOText.text = "Highscore: " + PlayerPrefs.GetInt("HighScore", 0);
         desaturationGO.SetActive(true);
         foreach (Transform child in desaturationGO.transform)
         {
